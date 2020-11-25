@@ -5,7 +5,9 @@ const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 5000;
-const geonear = require("geonear");
+
+const locationController = require("./controllers/LocationController");
+const userLocationController = require("./controllers/UserLocationController");
 
 const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}/${process.env.DB_NAME}`;
 mongoose.set("useFindAndModify", false);
@@ -22,6 +24,9 @@ app.use(
 );
 
 app.options("*", cors());
+
+app.get("/", locationController.locate);
+app.post("/api/v1", userLocationController.createNewUser);
 
 mongoose
   .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
