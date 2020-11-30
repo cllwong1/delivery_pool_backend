@@ -1,36 +1,35 @@
 require("dotenv").config();
 const axios = require("axios");
-const { response } = require("express");
-const adeline_usermodels = require("../models/adeline_usersmodel");
+
+const UserModels = require("../models/users");
 
 const controller = {
-  new: (req, res) => {
-    const encodedAddress = encodeURIComponent(req.body.address);
-    axios
-      .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${process.env.GEOCODEAPI}`
-      )
-      .then((response) => {
-        adeline_usermodels
-          .create({
-            name: req.body.name,
-            address: req.body.address,
-            "geometry.coordinates": [
-              response.data.results[0].geometry.location.lng,
-              response.data.results[0].geometry.location.lat,
-            ],
-          })
-          .then((result) => {
-            res.send(result);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  },
+  // new: (req, res) => {
+  //   const encodedAddress = encodeURIComponent(req.body.address);
+  //   axios
+  //     .get(
+  //       `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${process.env.GEOCODEAPI}`
+  //     )
+  //     .then((response) => {
+  //       UserModels.create({
+  //         name: req.body.name,
+  //         address: req.body.address,
+  //         "geometry.coordinates": [
+  //           response.data.results[0].geometry.location.lng,
+  //           response.data.results[0].geometry.location.lat,
+  //         ],
+  //       })
+  //         .then((result) => {
+  //           res.send(result);
+  //         })
+  //         .catch((err) => {
+  //           console.log(err);
+  //         });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // },
   locate: (req, res) => {
     console.log(req.body.address);
     const encodedAddress = encodeURIComponent(req.body.address);
@@ -39,24 +38,23 @@ const controller = {
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${process.env.GEOCODEAPI}`
       )
       .then((response) => {
-        adeline_usermodels
-          .aggregate([
-            {
-              $geoNear: {
-                near: {
-                  type: "Point",
-                  coordinates: [
-                    response.data.results[0].geometry.location.lng,
-                    response.data.results[0].geometry.location.lat,
-                  ],
-                },
-                distanceField: "dis",
-                includeLocs: "loc",
-                spherical: true,
-                maxDistance: 500,
+        UserModels.aggregate([
+          {
+            $geoNear: {
+              near: {
+                type: "Point",
+                coordinates: [
+                  response.data.results[0].geometry.location.lng,
+                  response.data.results[0].geometry.location.lat,
+                ],
               },
+              distanceField: "dis",
+              includeLocs: "loc",
+              spherical: true,
+              maxDistance: 500,
             },
-          ])
+          },
+        ])
           .then((updatedResult) => {
             res.send(updatedResult);
           })
