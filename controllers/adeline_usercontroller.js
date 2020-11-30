@@ -32,11 +32,13 @@ const controller = {
       });
   },
   locate: (req, res) => {
-    adeline_usermodels
-      .findOne({
-        name: "Colin Wong",
-      })
-      .then((result) => {
+    console.log(req.body.address);
+    const encodedAddress = encodeURIComponent(req.body.address);
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${process.env.GEOCODEAPI}`
+      )
+      .then((response) => {
         adeline_usermodels
           .aggregate([
             {
@@ -44,8 +46,8 @@ const controller = {
                 near: {
                   type: "Point",
                   coordinates: [
-                    result.geometry.coordinates[0],
-                    result.geometry.coordinates[1],
+                    response.data.results[0].geometry.location.lng,
+                    response.data.results[0].geometry.location.lat,
                   ],
                 },
                 distanceField: "dis",
@@ -55,8 +57,8 @@ const controller = {
               },
             },
           ])
-          .then((secondResult) => {
-            res.send(secondResult);
+          .then((updatedResult) => {
+            res.send(updatedResult);
           })
           .catch((err) => {
             console.log(err);
@@ -65,6 +67,41 @@ const controller = {
       .catch((err) => {
         console.log(err);
       });
+
+    // axios
+    //   .get(
+    //     `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${process.env.GEOCODEAPI}`
+    //   )
+    //   .then((result) => {
+    //     console.log(result);
+    // adeline_usermodels
+    //   .aggregate([
+    //     {
+    //       $geoNear: {
+    //         near: {
+    //           type: "Point",
+    //           coordinates: [
+    //             result.geometry.coordinates[0],
+    //             result.geometry.coordinates[1],
+    //           ],
+    //         },
+    //         distanceField: "dis",
+    //         includeLocs: "loc",
+    //         spherical: true,
+    //         maxDistance: 500,
+    //       },
+    //     },
+    //   ])
+    // .then((secondResult) => {
+    //   res.send(secondResult);
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    // });
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    // });
   },
 };
 

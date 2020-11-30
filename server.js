@@ -29,7 +29,7 @@ app.options("*", cors());
 app.get("/", locationController.locate);
 app.post("/api/v1", userLocationController.createNewUser);
 app.post("/api/v1/users/new", adeline_userController.new);
-app.get("/api/v1/location", adeline_userController.locate);
+app.post("/api/v1/location", adeline_userController.locate);
 
 mongoose
   .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
