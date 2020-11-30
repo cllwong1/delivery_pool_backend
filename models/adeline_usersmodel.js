@@ -17,6 +17,6 @@ const adeline_userSchema = new mongoose.Schema({
   geometry: GeoSchema,
 });
 
-const adeline_usermodels = mongoose.model("User", adeline_userSchema);
+const adeline_usermodels = mongoose.model("trial", adeline_userSchema);
 
-module.exports = adeline_usermodels;
+// module.exports = adeline_usermodels;
