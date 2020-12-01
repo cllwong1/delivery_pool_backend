@@ -35,6 +35,7 @@ const orderSchema = new mongoose.Schema({
   distance: {
     type: Number,
   },
+  usersjoined: [String],
   orderDetails: [
     {
       orderUserId: String,

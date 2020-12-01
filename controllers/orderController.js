@@ -62,6 +62,7 @@ const orderController = {
                     georesponse.data.results[0].geometry.location.lat,
                   ],
                 },
+                usersjoined: [response.user_id],
                 orderDetails: [
                   {
                     orderUserId: response.user_id,
