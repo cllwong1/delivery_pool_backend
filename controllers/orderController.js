@@ -87,6 +87,23 @@ const orderController = {
         console.log(err);
       });
   },
+  getOrderDetails: (req, res) => {
+    orderModel
+      .findOne({
+        _id: req.params.id,
+      })
+      .then((result) => {
+        if (!result) {
+          res.statusCode = 404;
+          res.json();
+          return;
+        }
+        res.json(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
 };
 
 module.exports = orderController;

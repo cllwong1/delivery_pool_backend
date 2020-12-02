@@ -8,7 +8,6 @@ const port = process.env.PORT || 5000;
 
 const locationController = require("./controllers/locationController");
 const usersController = require("./controllers/userController");
-const ordersController = require("./controllers/userController");
 const orderController = require("./controllers/orderController");
 
 const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}/${process.env.DB_NAME}`;
@@ -27,10 +26,16 @@ app.use(
 
 app.options("*", cors());
 
-// app.post("/api/v1/users/new", adeline_userController.new);
+//Locate
 app.post("/api/v1/location", locationController.locate);
+
+//Users
 app.post("/api/v1/users/register", usersController.register);
 app.post("/api/v1/users/login", usersController.login);
+
+//Orders
+app.get("/api/v1/orders/:id", orderController.getOrderDetails);
+
 app.post(
   "/api/v1/users/neworder/create",
   verifyJWT,

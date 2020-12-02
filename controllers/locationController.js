@@ -5,7 +5,6 @@ const OrderModels = require("../models/orders");
 
 const controller = {
   locate: (req, res) => {
-    console.log(req.body.address);
     const encodedAddress = encodeURIComponent(req.body.address);
     axios
       .get(
