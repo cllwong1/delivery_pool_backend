@@ -130,6 +130,7 @@ const controllers = {
           success: true,
           token: token,
           expiresAt: rawJWT.exp,
+          info: rawJWT,
         });
       })
       .catch((err) => {
