@@ -67,6 +67,9 @@ const controller = {
           },
           {
             $match: {
+              usersjoined: {
+                $nin: [rawJWT.user_id],
+              },
               userid: {
                 $ne: rawJWT.user_id,
               },
@@ -111,6 +114,9 @@ const controller = {
           },
           {
             $match: {
+              usersjoined: {
+                $nin: [rawJWT.user_id],
+              },
               userid: {
                 $ne: rawJWT.user_id,
               },
