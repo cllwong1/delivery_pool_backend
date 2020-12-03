@@ -37,6 +37,8 @@ app.post("/api/v1/users/login", usersController.login);
 app.get("/api/v1/orders-location", locationController.getOrdersLocation);
 app.post("/api/v1/orders-location", locationController.changeLocation);
 app.get("/api/v1/orders/:id", orderController.getOrderDetails);
+app.get("/api/v1/orders-created", orderController.getOrderCreated);
+app.get("/api/v1/orders-joined", orderController.getOrderJoined);
 
 app.post(
   "/api/v1/users/neworder/create",

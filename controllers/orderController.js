@@ -104,6 +104,37 @@ const orderController = {
         console.log(err);
       });
   },
+  getOrderCreated: (req, res) => {
+    const authToken = req.headers.auth_token;
+    const rawJWT = jwt.decode(authToken);
+
+    orderModel
+      .find({
+        userid: rawJWT.user_id,
+      })
+      .then((resutls) => {
+        res.send(resutls);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  getOrderJoined: (req, res) => {
+    const authToken = req.headers.auth_token;
+    const rawJWT = jwt.decode(authToken);
+    orderModel
+      .find({
+        usersjoined: {
+          $in: [rawJWT.user_id],
+        },
+      })
+      .then((results) => {
+        res.send(results);
+      })
+      .catch((err) => {
+        console.log;
+      });
+  },
 };
 
 module.exports = orderController;
