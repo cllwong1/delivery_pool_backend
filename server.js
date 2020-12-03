@@ -34,6 +34,8 @@ app.post("/api/v1/users/register", usersController.register);
 app.post("/api/v1/users/login", usersController.login);
 
 //Orders
+app.get("/api/v1/orders-location", locationController.getOrdersLocation);
+app.post("/api/v1/orders-location", locationController.changeLocation);
 app.get("/api/v1/orders/:id", orderController.getOrderDetails);
 
 app.post(

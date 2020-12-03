@@ -114,6 +114,8 @@ const controllers = {
             first_name: result.first_name,
             last_name: result.last_name,
             email: result.email,
+            user_id: result.user_id,
+            default_address: result.default_address,
           },
           process.env.JWT_SECRET,
           {
