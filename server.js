@@ -56,6 +56,20 @@ app.post(
 // join an order
 app.post("/api/v1/users/joinorder/:id", verifyJWT, orderController.joinOrder);
 
+// get request to obtain the orders details inorder to populate the order field
+app.get(
+  "/api/v1/users/joinorder/:id",
+  verifyJWT,
+  orderController.getJoinedOrderDetails
+);
+
+// edit orders of joined order
+app.post(
+  "/api/v1/users/editjoinorder/:id",
+  verifyJWT,
+  orderController.amendJoinedOrder
+);
+
 mongoose
   .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then((response) => {

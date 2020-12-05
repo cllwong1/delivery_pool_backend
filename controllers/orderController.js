@@ -190,6 +190,50 @@ const orderController = {
       })
       .catch((err) => console.log(err));
   },
+
+  getJoinedOrderDetails(req, res) {
+    const orderid = req.params.id;
+
+    obtainUserInfo(req, res)
+      .then((response) => {
+        orderModel
+          .findOne(
+            { _id: orderid, "orderDetails.orderUserId": response.user_id },
+            { "orderDetails.$": 1 }
+          )
+          .then((result) => {
+            // console.log(result)
+            res.json(result);
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
+  },
+  amendJoinedOrder(req, res) {
+    console.log("connect");
+    console.log(req.params.id);
+    console.log(req.body.orderitem);
+    obtainUserInfo(req, res).then((response) => {
+      if (!response) {
+        res.json({ message: "user error" });
+        return;
+      }
+      const orderid = req.params.id;
+      orderModel
+        .findOneAndUpdate(
+          { _id: orderid, "orderDetails.orderUserId": response.user_id },
+          { $set: { "orderDetails.$.food": [req.body.orderitem] } }
+        )
+        .then((result) => {
+          console.log(result);
+          res.json(result);
+          console.log("working");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  },
 };
 
 function obtainUserInfo(req, res) {
