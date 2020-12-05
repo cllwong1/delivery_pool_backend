@@ -62,7 +62,7 @@ const orderController = {
                     georesponse.data.results[0].geometry.location.lat,
                   ],
                 },
-                usersjoined: [response.user_id],
+                // usersjoined: [response.user_id],
                 orderDetails: [
                   {
                     orderUserId: response.user_id,
@@ -135,6 +135,44 @@ const orderController = {
         console.log;
       });
   },
+  amendCreatedOrder(req, res) {
+    // console.log(req.body);
+    // console.log("connected");
+    obtainUserInfo(req, res).then((response) => {
+      if (!response) {
+        res.json({ message: "user error" });
+        return;
+      }
+
+      const orderid = req.params._id;
+
+      orderModel
+        .findOneAndUpdate(
+          { _id: orderid, "orderDetails.orderUserId": response.user_id },
+          { $set: { "orderDetails.$.food": [req.body.orderitem] } }
+        )
+        .then((result) => {
+          res.json(result);
+          // console.log("working");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  },
 };
+
+function obtainUserInfo(req, res) {
+  //decode the jwt to retrieve the user iinfo
+  const authToken = req.headers.auth_token;
+  const rawJWT = jwt.decode(authToken);
+  const email = rawJWT.email;
+
+  //check the user databsase to see if the user exists using the above user info
+
+  return userModel.findOne({
+    email: email,
+  });
+}
 
 module.exports = orderController;

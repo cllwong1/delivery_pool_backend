@@ -46,6 +46,13 @@ app.post(
   orderController.createOrder
 );
 
+//amend a particular order
+app.post(
+  "/api/v1/users/orderscreated/:_id",
+  verifyJWT,
+  orderController.amendCreatedOrder
+);
+
 mongoose
   .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then((response) => {
