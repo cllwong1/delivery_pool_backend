@@ -4,6 +4,18 @@ const axios = require("axios");
 const jwt = require("jsonwebtoken");
 
 const orderController = {
+
+  newOrder(req, res){
+    obtainUserInfo(req, res)
+    .then(response=>{
+      // console.log(response)
+      res.json(response)
+    }
+      
+    )
+    .catch(err=>{console.log(err)})
+  },
+
   createOrder: (req, res) => {
     const orderbody = req.body;
 

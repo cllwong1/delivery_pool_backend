@@ -40,6 +40,9 @@ app.get("/api/v1/orders/:id", orderController.getOrderDetails);
 app.get("/api/v1/orders-created", orderController.getOrderCreated);
 app.get("/api/v1/orders-joined", orderController.getOrderJoined);
 
+//when the user click create order, the meetup point should field should be populated with default address
+app.get("/api/v1/users/neworder", orderController.newOrder)
+
 app.post(
   "/api/v1/users/neworder/create",
   verifyJWT,
