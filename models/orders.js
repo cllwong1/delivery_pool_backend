@@ -42,6 +42,7 @@ const orderSchema = new mongoose.Schema({
       food: [String],
     },
   ],
+  isFulfilled: {type: Boolean, default: false}
 });
 
 orderSchema.index({ location: "2dsphere" });

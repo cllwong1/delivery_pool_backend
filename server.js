@@ -73,6 +73,9 @@ app.post(
   orderController.amendJoinedOrder
 );
 
+// fulfil the created order
+app.post("/api/v1/users/fulfillorder/:id", verifyJWT, orderController.fulfillOrder)
+
 mongoose
   .connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then((response) => {

@@ -28,6 +28,14 @@ const controller = {
               maxDistance: 500,
             },
           },
+
+          {
+            $match: {
+              isFulfilled: {
+                $eq: false
+              }
+            },
+          },
         ])
           .then((updatedResult) => {
             res.json(updatedResult);
@@ -73,6 +81,9 @@ const controller = {
               userid: {
                 $ne: rawJWT.user_id,
               },
+              isFulfilled: {
+                $eq: false
+              }
             },
           },
         ])
@@ -120,6 +131,9 @@ const controller = {
               userid: {
                 $ne: rawJWT.user_id,
               },
+              isFulfilled: {
+                $eq: false
+              }
             },
           },
         ])

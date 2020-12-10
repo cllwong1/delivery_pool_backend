@@ -122,7 +122,7 @@ const orderController = {
 
     orderModel
       .find({
-        userid: rawJWT.user_id,
+        userid: rawJWT.user_id, isFulfilled: false
       })
       .then((resutls) => {
         res.send(resutls);
@@ -131,14 +131,40 @@ const orderController = {
         console.log(err);
       });
   },
+
+  fulfillOrder: (req, res) => {
+    obtainUserInfo(req, res)
+    .then( response=>{
+      if (req.body.isFulfilled) {
+        res.json({message: "cannot resubmit a confirmed order"})
+        console.log('resubmited order')
+        return
+      }
+      orderModel.findOneAndUpdate({_id: req.params.id},
+        {isFulfilled: true}
+        )
+        .then( newresponse=>  {
+          res.json({message: "order submitted"})
+          console.log('fulfill working')
+        })
+        .catch(err => console.log(err))
+
+    })
+    .catch(err => console.log(err))
+  },
+
   getOrderJoined: (req, res) => {
     const authToken = req.headers.auth_token;
     const rawJWT = jwt.decode(authToken);
     orderModel
       .find({
-        usersjoined: {
-          $in: [rawJWT.user_id],
-        },
+        $and: [
+          {usersjoined: {
+            $in: [rawJWT.user_id],
+          }},
+          {isFulfilled: false}
+        ]
+        
       })
       .then((results) => {
         res.send(results);
