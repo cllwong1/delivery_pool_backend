@@ -37,7 +37,7 @@ const controllers = {
               email: req.body.email,
               contact_number: req.body.contact_number,
               user_id: req.body.user_id,
-              slug: _.kebabCase(req.body.first_name + req.body.last_name),
+              slug: _.kebabCase(req.body.first_name + req.body.user_id),
               default_address: req.body.default_address,
               "geometry.coordinates": [
                 response.data.results[0].geometry.location.lng,
